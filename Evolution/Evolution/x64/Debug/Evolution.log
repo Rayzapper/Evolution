@@ -1,0 +1,5 @@
+﻿  Game.cpp
+c:\users\rasmus\documents\visual studio 2015\projects\evolution\evolution\evolution\population.h(36): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\rasmus\documents\visual studio 2015\projects\evolution\evolution\evolution\game.h(30): warning C4305: 'initializing': truncation from 'double' to 'float'
+c:\users\rasmus\documents\visual studio 2015\projects\evolution\evolution\evolution\game.cpp(321): warning C4244: 'argument': conversion from 'size_t' to 'float', possible loss of data
+  Evolution.vcxproj -> C:\Users\Rasmus\Documents\Visual Studio 2015\Projects\Evolution\Evolution\x64\Debug\Evolution.exe
