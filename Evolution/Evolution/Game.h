@@ -32,7 +32,7 @@ private:
 
 	int m_PopSize = 100, m_GenomeSize = 600, m_GenerationCounter = 1;
 
-	Population testPopulation;
+	Population m_Population;
 	int testCounter = 0;
 
 	short m_Map[20][20] =

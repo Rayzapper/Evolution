@@ -22,6 +22,7 @@ Game::~Game()
 	}
 	m_Dropdowns.clear();
 	delete m_Pathfinder;
+	delete m_Window;
 }
 
 void Game::Run()
@@ -45,8 +46,8 @@ void Game::Run()
 
 	sf::Clock deltaClock;
 
-	testPopulation.GenerateRandomPopulation(m_PopSize, m_GenomeSize);
-	for each (Individual *i in testPopulation.GetIndividuals())
+	m_Population.GenerateRandomPopulation(m_PopSize, m_GenomeSize);
+	for each (Individual *i in m_Population.GetIndividuals())
 	{
 		i->SetCurrentTile(m_StartTile);
 	}
@@ -183,7 +184,10 @@ void Game::Update(float dt, sf::Vector2i mousePosition)
 	m_DropdownIsActive = false;
 	for each (Dropdown *d in m_Dropdowns)
 	{
-		if (d->GetActive() == true) m_DropdownIsActive = true;
+		if (d->GetActive() == true)
+		{
+			m_DropdownIsActive = true;
+		}
 	}
 
 	if (clickedButton != nullptr)
@@ -200,17 +204,69 @@ void Game::Update(float dt, sf::Vector2i mousePosition)
 		}
 		else if (buttonID == 1)
 		{
-			cout << "Switch to Map 1" << endl;
+			cout << "Roulette Selection" << endl;
+			m_Population.SetSelectionType(Roulette, 0);
 		}
 		else if (buttonID == 2)
 		{
-			cout << "Switch to Map 2" << endl;
+			cout << "Tournament 2" << endl;
+			m_Population.SetSelectionType(Tournament, 2);
+		}
+		else if (buttonID == 3)
+		{
+			cout << "Tournament 4" << endl;
+			m_Population.SetSelectionType(Tournament, 4);
+		}
+		else if (buttonID == 4)
+		{
+			cout << "Tournament 8" << endl;
+			m_Population.SetSelectionType(Tournament, 8);
+		}
+		else if (buttonID == 5)
+		{
+			cout << "Tournament 16" << endl;
+			m_Population.SetSelectionType(Tournament, 16);
+		}
+		else if (buttonID == 6)
+		{
+			cout << "Tournament 32" << endl;
+			m_Population.SetSelectionType(Tournament, 32);
+		}
+		else if (buttonID == 7)
+		{
+			cout << "Tournament 64" << endl;
+			m_Population.SetSelectionType(Tournament, 64);
+		}
+		else if (buttonID == 8)
+		{
+			cout << "Reset" << endl;
+			m_Population.SetMutationType(Reset, 0);
+		}
+		else if (buttonID == 9)
+		{
+			cout << "Offset 1" << endl;
+			m_Population.SetMutationType(Offset, 1);
+		}
+		else if (buttonID == 10)
+		{
+			cout << "Offset 2" << endl;
+			m_Population.SetMutationType(Offset, 2);
+		}
+		else if (buttonID == 11)
+		{
+			cout << "Offset 3" << endl;
+			m_Population.SetMutationType(Offset, 3);
+		}
+		else if (buttonID == 12)
+		{
+			cout << "Offset 4" << endl;
+			m_Population.SetMutationType(Offset, 4);
 		}
 	}
 
 	if (testCounter < m_GenomeSize)
 	{
-		for each (Individual *i in testPopulation.GetIndividuals())
+		for each (Individual *i in m_Population.GetIndividuals())
 		{
 			if (i->GetCurrentTile() != m_EndTile)
 				i->Step(testCounter);
@@ -230,8 +286,8 @@ void Game::Update(float dt, sf::Vector2i mousePosition)
 	{
 		cout << "New Generation" << endl;
 		m_GenerationCounter++;
-		testPopulation.NewGeneration(m_GenerationCounter);
-		for each (Individual *i in testPopulation.GetIndividuals())
+		m_Population.NewGeneration(m_GenerationCounter);
+		for each (Individual *i in m_Population.GetIndividuals())
 		{
 			i->SetCurrentTile(m_StartTile);
 		}
@@ -263,7 +319,7 @@ void Game::Render()
 		}
 	}
 
-	testPopulation.Render(m_Window);
+	m_Population.Render(m_Window);
 }
 
 void Game::SetupButtons()
@@ -275,7 +331,7 @@ void Game::SetupButtons()
 	button->SetPosition(sf::Vector2f(830, 30));
 	m_Buttons.push_back(button);
 
-	Dropdown *dropdown = new Dropdown(sf::String("Roulette Selection"), &m_ButtonFont, -1);
+	Dropdown *dropdown = new Dropdown(sf::String("Selection type"), &m_ButtonFont, -1);
 	dropdown->SetPosition(sf::Vector2f(830, 80));
 	m_Dropdowns.push_back(dropdown);
 
@@ -294,8 +350,8 @@ void Game::SetupButtons()
 	button = new Button(sf::String("Tournament 64"), &m_ButtonFont, 7);
 	dropdown->AddButton(button);
 
-	dropdown = new Dropdown(sf::String("Reset Mutation"), &m_ButtonFont, -1);
-	dropdown->SetPosition(sf::Vector2f(830, 130));
+	dropdown = new Dropdown(sf::String("Mutation type"), &m_ButtonFont, -1);
+	dropdown->SetPosition(sf::Vector2f(1040, 80));
 	m_Dropdowns.push_back(dropdown);
 
 	button = new Button(sf::String("Reset"), &m_ButtonFont, 8);
